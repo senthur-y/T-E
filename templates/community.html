@@ -1,0 +1,198 @@
+{% extends "layout.html" %}
+
+{% block title %}Community{% endblock %}
+
+{% block content %}
+    <!-- Main Content -->
+    <section class="community-section">
+        <div class="container">
+            <div class="community-layout">
+                <!-- Sidebar -->
+                <div class="sidebar">
+                    <div class="sidebar-section">
+                        <h2>Community</h2>
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="search" placeholder="Search discussions...">
+                        </div>
+                    </div>
+                    
+                    <div class="sidebar-section">
+                        <h3>Categories</h3>
+                        <ul class="category-list">
+                            <li><a href="#" class="category-item">
+                                <span>General Discussion</span>
+                                <span class="badge">1243</span>
+                            </a></li>
+                            <li><a href="#" class="category-item">
+                                <span>Threat Intelligence</span>
+                                <span class="badge">856</span>
+                            </a></li>
+                            <li><a href="#" class="category-item">
+                                <span>Malware Analysis</span>
+                                <span class="badge">642</span>
+                            </a></li>
+                            <li><a href="#" class="category-item">
+                                <span>Network Security</span>
+                                <span class="badge">524</span>
+                            </a></li>
+                            <li><a href="#" class="category-item">
+                                <span>Web Security</span>
+                                <span class="badge">498</span>
+                            </a></li>
+                            <li><a href="#" class="category-item">
+                                <span>Cloud Security</span>
+                                <span class="badge">387</span>
+                            </a></li>
+                            <li><a href="#" class="category-item">
+                                <span>Career Development</span>
+                                <span class="badge">321</span>
+                            </a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="sidebar-section">
+                        <h3>Popular Tags</h3>
+                        <div class="tag-cloud">
+                            <span class="tag">penetration-testing</span>
+                            <span class="tag">zero-day</span>
+                            <span class="tag">ransomware</span>
+                            <span class="tag">OWASP</span>
+                            <span class="tag">CTF</span>
+                            <span class="tag">incident-response</span>
+                            <span class="tag">threat-hunting</span>
+                            <span class="tag">SOC</span>
+                            <span class="tag">SIEM</span>
+                            <span class="tag">CVE</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Main Content -->
+                <div class="main-content">
+                    <div class="tabs">
+                        <div class="tabs-header">
+                            <div class="tab-buttons">
+                                <button class="tab-btn active" data-tab="trending">
+                                    <i class="fas fa-chart-line"></i> Trending
+                                </button>
+                                <button class="tab-btn" data-tab="latest">
+                                    <i class="fas fa-clock"></i> Latest
+                                </button>
+                                <button class="tab-btn" data-tab="popular">
+                                    <i class="fas fa-comment"></i> Most Discussed
+                                </button>
+                            </div>
+                            <button class="btn btn-primary">New Discussion</button>
+                        </div>
+                        
+                        <div class="tab-content active" id="trending-tab">
+                            {% for discussion in discussions %}
+                            <div class="discussion-card">
+                                <div class="discussion-header">
+                                    <h3>{{ discussion.title }}</h3>
+                                    <p>{{ discussion.description }}</p>
+                                </div>
+                                <div class="discussion-tags">
+                                    {% for tag in discussion.tags %}
+                                    <span class="tag">{{ tag }}</span>
+                                    {% endfor %}
+                                </div>
+                                <div class="discussion-footer">
+                                    <div class="author">
+                                        <div class="avatar">
+                                            {{ discussion.author[:2] }}
+                                        </div>
+                                        <div class="author-info">
+                                            <p class="author-name">{{ discussion.author }}</p>
+                                            <p class="post-time">{{ discussion.time }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="discussion-stats">
+                                        <span><i class="fas fa-comment"></i> {{ discussion.replies }} replies</span>
+                                        <span><i class="fas fa-eye"></i> {{ discussion.views }} views</span>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        
+                        <div class="tab-content" id="latest-tab">
+                            <div class="discussion-card">
+                                <div class="discussion-header">
+                                    <h3>Latest security tools for automated pentesting</h3>
+                                    <p>I've been exploring new tools for automated penetration testing. Here's what I've found so far.</p>
+                                </div>
+                                <div class="discussion-tags">
+                                    <span class="tag">pentesting</span>
+                                    <span class="tag">automation</span>
+                                    <span class="tag">tools</span>
+                                </div>
+                                <div class="discussion-footer">
+                                    <div class="author">
+                                        <div class="avatar">PT</div>
+                                        <div class="author-info">
+                                            <p class="author-name">PenTester</p>
+                                            <p class="post-time">30 minutes ago</p>
+                                        </div>
+                                    </div>
+                                    <div class="discussion-stats">
+                                        <span><i class="fas fa-comment"></i> 3 replies</span>
+                                        <span><i class="fas fa-eye"></i> 124 views</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="tab-content" id="popular-tab">
+                            <div class="discussion-card">
+                                <div class="discussion-header">
+                                    <h3>The future of cybersecurity: AI and ML in defense strategies</h3>
+                                    <p>How will artificial intelligence and machine learning shape the future of cybersecurity defense?</p>
+                                </div>
+                                <div class="discussion-tags">
+                                    <span class="tag">AI</span>
+                                    <span class="tag">ML</span>
+                                    <span class="tag">future</span>
+                                </div>
+                                <div class="discussion-footer">
+                                    <div class="author">
+                                        <div class="avatar">AI</div>
+                                        <div class="author-info">
+                                            <p class="author-name">AIResearcher</p>
+                                            <p class="post-time">1 week ago</p>
+                                        </div>
+                                    </div>
+                                    <div class="discussion-stats">
+                                        <span><i class="fas fa-comment"></i> 87 replies</span>
+                                        <span><i class="fas fa-eye"></i> 3452 views</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Tab functionality
+    document.querySelectorAll('.tab-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            // Remove active class from all buttons and content
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            // Add active class to clicked button
+            button.classList.add('active');
+            
+            // Add active class to corresponding content
+            const tabId = button.getAttribute('data-tab');
+            document.getElementById(`${tabId}-tab`).classList.add('active');
+        });
+    });
+</script>
+{% endblock %}

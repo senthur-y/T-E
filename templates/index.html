@@ -1,0 +1,203 @@
+{% extends "layout.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Advance Your Cybersecurity Skills</h1>
+                <p>Join our community of cybersecurity professionals. Practice in our labs, share knowledge, and stay ahead of threats.</p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary btn-lg">Get Started <i class="fas fa-chevron-right"></i></button>
+                    <button class="btn btn-outline btn-lg">Explore Labs</button>
+                </div>
+                <div class="python-status">
+                    Python Backend Status: <span id="backend-status">Checking...</span>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="secure-environment">
+                    <i class="fas fa-lock"></i>
+                    <h3>Secure Environment</h3>
+                    <p>Practice in isolated environments designed for real-world scenarios</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Everything You Need</h2>
+                <p>Our platform provides all the tools and resources for cybersecurity professionals to learn, practice, and connect.</p>
+            </div>
+            <div class="feature-cards">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Community</h3>
+                    <p>Connect with peers, share insights, and collaborate on security challenges.</p>
+                    <a href="/community" class="feature-link">Join Discussions</a>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-flask"></i>
+                    </div>
+                    <h3>Labs</h3>
+                    <p>Hands-on environments to practice techniques and test your skills safely.</p>
+                    <a href="/labs" class="feature-link">Explore Labs</a>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Resources</h3>
+                    <p>Access guides, tools, and the latest research in cybersecurity.</p>
+                    <a href="/resources" class="feature-link">Browse Resources</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Latest Threats Section -->
+    <section class="latest-threats">
+        <div class="container">
+            <div class="section-header">
+                <h2>Latest Threats</h2>
+                <p>Real-time threat intelligence powered by our Python backend</p>
+            </div>
+            <div class="threat-cards">
+                {% for threat in threats %}
+                <div class="threat-card">
+                    <div class="threat-header">
+                        <i class="fas fa-code"></i>
+                        <h3>{{ threat.name }}</h3>
+                    </div>
+                    <p>{{ threat.description }}</p>
+                    <div class="threat-meta">
+                        <span class="severity {{ threat.severity.lower() }}">Severity: {{ threat.severity }}</span>
+                        <span class="date">{{ threat.date }}</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Security Scanner Section -->
+    <section class="security-scanner">
+        <div class="container">
+            <div class="section-header">
+                <h2>Security Scanner</h2>
+                <p>Scan a target for potential vulnerabilities</p>
+            </div>
+            <div class="scanner-container">
+                <form id="scan-form" class="scan-form">
+                    <input type="text" id="scan-target" placeholder="Enter URL or IP address" required>
+                    <button type="submit" class="btn btn-primary">Scan Target</button>
+                </form>
+                <div id="scan-results" class="scan-results">
+                    <h3>Scan Results</h3>
+                    <div id="results-content">
+                        <p>Enter a target and click "Scan Target" to begin.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <h2>Ready to Level Up Your Skills?</h2>
+            <p>Join thousands of cybersecurity professionals who are improving their skills and staying ahead of threats.</p>
+            <div class="cta-buttons">
+                <button class="btn btn-secondary btn-lg">Sign Up Now</button>
+                <button class="btn btn-outline-light btn-lg">Learn More</button>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Check backend status
+    fetch('/api/status')
+        .then(response => response.json())
+        .then(data => {
+            const statusElement = document.getElementById('backend-status');
+            if (data.status === 'Online') {
+                statusElement.textContent = 'Online';
+                statusElement.classList.add('status-online');
+            } else {
+                statusElement.textContent = 'Offline';
+                statusElement.classList.add('status-offline');
+            }
+        })
+        .catch(error => {
+            console.error('Error checking backend status:', error);
+            const statusElement = document.getElementById('backend-status');
+            statusElement.textContent = 'Offline';
+            statusElement.classList.add('status-offline');
+        });
+
+    // Security Scanner
+    document.getElementById('scan-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const target = document.getElementById('scan-target').value;
+        const resultsContent = document.getElementById('results-content');
+        
+        resultsContent.innerHTML = '<p>Scanning target... Please wait.</p>';
+        
+        const formData = new FormData();
+        formData.append('target', target);
+        
+        fetch('/api/scan', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            let resultsHtml = `
+                <div class="scan-summary">
+                    <p><strong>Target:</strong> ${data.target}</p>
+                    <p><strong>Scan Time:</strong> ${new Date(data.scan_time).toLocaleString()}</p>
+                </div>
+            `;
+            
+            if (data.vulnerabilities && data.vulnerabilities.length > 0) {
+                resultsHtml += '<div class="vulnerabilities">';
+                resultsHtml += '<h4>Vulnerabilities Found:</h4>';
+                resultsHtml += '<ul>';
+                
+                data.vulnerabilities.forEach(vuln => {
+                    resultsHtml += `
+                        <li class="vulnerability ${vuln.severity.toLowerCase()}">
+                            <div class="vuln-header">
+                                <span class="vuln-name">${vuln.name}</span>
+                                <span class="vuln-severity">${vuln.severity}</span>
+                            </div>
+                            <p class="vuln-details">${vuln.details}</p>
+                        </li>
+                    `;
+                });
+                
+                resultsHtml += '</ul></div>';
+            } else {
+                resultsHtml += '<p>No vulnerabilities found.</p>';
+            }
+            
+            resultsContent.innerHTML = resultsHtml;
+        })
+        .catch(error => {
+            console.error('Error scanning target:', error);
+            resultsContent.innerHTML = '<p>Error scanning target. Please try again.</p>';
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,305 @@
+{% extends "layout.html" %}
+
+{% block title %}Labs{% endblock %}
+
+{% block content %}
+    <!-- Hero Section -->
+    <section class="hero labs-hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Python-Powered Cybersecurity Labs</h1>
+                <p>Practice your skills in realistic environments. Our labs are powered by Python backend for real security tools and analysis.</p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary btn-lg">Get Started</button>
+                    <button class="btn btn-outline btn-lg">Browse Labs</button>
+                </div>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-terminal"></i>
+                        </div>
+                        <div class="stat-text">
+                            <h3>Python</h3>
+                            <p>Backend</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="stat-text">
+                            <h3>HTML/CSS</h3>
+                            <p>Frontend</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <div class="stat-text">
+                            <h3>100%</h3>
+                            <p>Secure</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-microchip"></i>
+                        </div>
+                        <div class="stat-text">
+                            <h3>Real</h3>
+                            <p>Tools</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search and Filter -->
+    <section class="search-filter">
+        <div class="container">
+            <div class="search-container">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="search" placeholder="Search labs...">
+                </div>
+                <div class="filter-tags">
+                    <span class="tag active">All Labs</span>
+                    <span class="tag">Network Security</span>
+                    <span class="tag">Web Security</span>
+                    <span class="tag">Malware Analysis</span>
+                    <span class="tag">Forensics</span>
+                    <span class="tag">Cloud Security</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Labs Section -->
+    <section class="labs-section">
+        <div class="container">
+            <div class="tabs">
+                <div class="tab-header">
+                    <button class="tab-btn active" data-tab="all">All Labs</button>
+                    <button class="tab-btn" data-tab="beginner">Beginner</button>
+                    <button class="tab-btn" data-tab="intermediate">Intermediate</button>
+                    <button class="tab-btn" data-tab="advanced">Advanced</button>
+                    <button class="tab-btn" data-tab="my-labs">My Labs</button>
+                </div>
+                
+                <div class="tab-content active" id="all-tab">
+                    <h2>Featured Labs</h2>
+                    <div class="lab-cards">
+                        {% for lab in labs %}
+                        <div class="lab-card">
+                            <div class="lab-header">
+                                <div class="lab-icon-difficulty">
+                                    {% if lab.category == "network" %}
+                                    <div class="lab-icon"><i class="fas fa-server"></i></div>
+                                    {% elif lab.category == "web" %}
+                                    <div class="lab-icon"><i class="fas fa-globe"></i></div>
+                                    {% else %}
+                                    <div class="lab-icon"><i class="fas fa-code"></i></div>
+                                    {% endif %}
+                                    
+                                    <span class="difficulty {{ lab.difficulty }}">{{ lab.difficulty }}</span>
+                                </div>
+                                <h3>{{ lab.title }}</h3>
+                                <p>{{ lab.description }}</p>
+                            </div>
+                            <div class="lab-meta">
+                                <div class="lab-stats">
+                                    <span>Duration: {{ lab.duration }}</span>
+                                    <span>{{ lab.completions }} completions</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: 65%"></div>
+                                </div>
+                            </div>
+                            <div class="lab-footer">
+                                <a href="/lab/{{ lab.id }}" class="btn btn-primary btn-block">Start Lab</a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <h2>Lab Categories</h2>
+                    <div class="category-cards">
+                        <div class="category-card">
+                            <div class="category-icon">
+                                <i class="fas fa-server"></i>
+                            </div>
+                            <h3>Network Security</h3>
+                            <p>Protect networks from unauthorized access, misuse, and attacks.</p>
+                            <div class="category-meta">
+                                <span>24 labs available</span>
+                            </div>
+                            <button class="btn btn-outline btn-block">View Labs</button>
+                        </div>
+                        <div class="category-card">
+                            <div class="category-icon">
+                                <i class="fas fa-globe"></i>
+                            </div>
+                            <h3>Web Security</h3>
+                            <p>Secure web applications and services against various threats.</p>
+                            <div class="category-meta">
+                                <span>18 labs available</span>
+                            </div>
+                            <button class="btn btn-outline btn-block">View Labs</button>
+                        </div>
+                        <div class="category-card">
+                            <div class="category-icon">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <h3>Malware Analysis</h3>
+                            <p>Analyze and understand malicious software behavior.</p>
+                            <div class="category-meta">
+                                <span>15 labs available</span>
+                            </div>
+                            <button class="btn btn-outline btn-block">View Labs</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="beginner-tab">
+                    <div class="lab-cards">
+                        {% for lab in labs if lab.difficulty == "beginner" %}
+                        <div class="lab-card">
+                            <div class="lab-header">
+                                <div class="lab-icon-difficulty">
+                                    {% if lab.category == "network" %}
+                                    <div class="lab-icon"><i class="fas fa-server"></i></div>
+                                    {% elif lab.category == "web" %}
+                                    <div class="lab-icon"><i class="fas fa-globe"></i></div>
+                                    {% else %}
+                                    <div class="lab-icon"><i class="fas fa-code"></i></div>
+                                    {% endif %}
+                                    
+                                    <span class="difficulty {{ lab.difficulty }}">{{ lab.difficulty }}</span>
+                                </div>
+                                <h3>{{ lab.title }}</h3>
+                                <p>{{ lab.description }}</p>
+                            </div>
+                            <div class="lab-meta">
+                                <div class="lab-stats">
+                                    <span>Duration: {{ lab.duration }}</span>
+                                    <span>{{ lab.completions }} completions</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: 65%"></div>
+                                </div>
+                            </div>
+                            <div class="lab-footer">
+                                <a href="/lab/{{ lab.id }}" class="btn btn-primary btn-block">Start Lab</a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="intermediate-tab">
+                    <div class="lab-cards">
+                        {% for lab in labs if lab.difficulty == "intermediate" %}
+                        <div class="lab-card">
+                            <div class="lab-header">
+                                <div class="lab-icon-difficulty">
+                                    {% if lab.category == "network" %}
+                                    <div class="lab-icon"><i class="fas fa-server"></i></div>
+                                    {% elif lab.category == "web" %}
+                                    <div class="lab-icon"><i class="fas fa-globe"></i></div>
+                                    {% else %}
+                                    <div class="lab-icon"><i class="fas fa-code"></i></div>
+                                    {% endif %}
+                                    
+                                    <span class="difficulty {{ lab.difficulty }}">{{ lab.difficulty }}</span>
+                                </div>
+                                <h3>{{ lab.title }}</h3>
+                                <p>{{ lab.description }}</p>
+                            </div>
+                            <div class="lab-meta">
+                                <div class="lab-stats">
+                                    <span>Duration: {{ lab.duration }}</span>
+                                    <span>{{ lab.completions }} completions</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: 65%"></div>
+                                </div>
+                            </div>
+                            <div class="lab-footer">
+                                <a href="/lab/{{ lab.id }}" class="btn btn-primary btn-block">Start Lab</a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="advanced-tab">
+                    <div class="lab-cards">
+                        {% for lab in labs if lab.difficulty == "advanced" %}
+                        <div class="lab-card">
+                            <div class="lab-header">
+                                <div class="lab-icon-difficulty">
+                                    {% if lab.category == "network" %}
+                                    <div class="lab-icon"><i class="fas fa-server"></i></div>
+                                    {% elif lab.category == "web" %}
+                                    <div class="lab-icon"><i class="fas fa-globe"></i></div>
+                                    {% else %}
+                                    <div class="lab-icon"><i class="fas fa-code"></i></div>
+                                    {% endif %}
+                                    
+                                    <span class="difficulty {{ lab.difficulty }}">{{ lab.difficulty }}</span>
+                                </div>
+                                <h3>{{ lab.title }}</h3>
+                                <p>{{ lab.description }}</p>
+                            </div>
+                            <div class="lab-meta">
+                                <div class="lab-stats">
+                                    <span>Duration: {{ lab.duration }}</span>
+                                    <span>{{ lab.completions }} completions</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: 65%"></div>
+                                </div>
+                            </div>
+                            <div class="lab-footer">
+                                <a href="/lab/{{ lab.id }}" class="btn btn-primary btn-block">Start Lab</a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="my-labs-tab">
+                    <div class="sign-in-prompt">
+                        <i class="fas fa-lock"></i>
+                        <h3>Sign In to Access Your Labs</h3>
+                        <p>Track your progress and continue where you left off.</p>
+                        <button class="btn btn-primary">Sign In</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Tab functionality
+    document.querySelectorAll('.tab-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            // Remove active class from all buttons and content
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            // Add active class to clicked button
+            button.classList.add('active');
+            
+            // Add active class to corresponding content
+            const tabId = button.getAttribute('data-tab');
+            document.getElementById(`${tabId}-tab`).classList.add('active');
+        });
+    });
+</script>
+{% endblock %}
